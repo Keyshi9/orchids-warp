@@ -12,6 +12,7 @@ import {
   X,
   RefreshCw,
   ArrowLeft,
+  Wrench,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type ConversionFormat = {
   id: string;
@@ -219,20 +221,42 @@ export default function ConverterPage() {
   };
 
   return (
-    <div className="min-h-screen gradient-bg">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          Retour aux outils
-        </Link>
+    <div className="min-h-screen bg-background">
+      <header className="border-b sticky top-0 z-50 bg-background">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm">Retour</span>
+            </Link>
+            <div className="h-4 w-px bg-border" />
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded bg-foreground flex items-center justify-center">
+                <Wrench className="w-4 h-4 text-background" />
+              </div>
+              <span className="text-lg font-semibold">ToolBox</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="outline" size="sm">
+              Connexion
+            </Button>
+          </div>
+        </div>
+      </header>
 
+      <main className="max-w-4xl mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-            <RefreshCw className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-foreground flex items-center justify-center">
+            <RefreshCw className="w-8 h-8 text-background" />
           </div>
           <h1 className="text-3xl font-bold mb-2">Convertisseur de Fichiers</h1>
           <p className="text-muted-foreground">
@@ -240,7 +264,7 @@ export default function ConverterPage() {
           </p>
         </motion.div>
 
-        <Card className="card-glow p-6 md:p-8 bg-card/50 backdrop-blur-sm">
+        <Card className="p-6 md:p-8">
           <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <h2 className="text-xl font-semibold">Convertir mes fichiers</h2>
             <div className="flex items-center gap-3">
@@ -421,7 +445,7 @@ export default function ConverterPage() {
             </motion.div>
           ))}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

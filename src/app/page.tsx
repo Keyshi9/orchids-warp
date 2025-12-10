@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type Tool = {
   id: string;
@@ -143,9 +144,12 @@ export default function Home() {
               Bientôt
             </a>
           </nav>
-          <Button variant="outline" size="sm">
-            Connexion
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="outline" size="sm">
+              Connexion
+            </Button>
+          </div>
         </div>
       </header>
 

@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type Currency = {
   code: string;
@@ -142,9 +143,12 @@ export default function CurrencyConverter() {
               <span className="text-lg font-semibold">ToolBox</span>
             </div>
           </div>
-          <Button variant="outline" size="sm">
-            Connexion
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="outline" size="sm">
+              Connexion
+            </Button>
+          </div>
         </div>
       </header>
 

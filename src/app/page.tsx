@@ -15,6 +15,8 @@ import {
   ArrowRight,
   Coins,
   Divide,
+  Send,
+  X,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,6 +24,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { AdminButton } from "@/components/admin-button";
 import { useLanguage } from "@/lib/language-context";
+import { useState } from "react";
 
 type ToolKey = "converter" | "currency" | "calculator" | "ruleOfThree" | "colorPicker" | "textTools" | "hashGenerator" | "qrGenerator" | "timestamp" | "urlEncoder" | "jsonFormatter";
 
@@ -30,21 +33,20 @@ type Tool = {
   key: ToolKey;
   icon: React.ReactNode;
   href: string;
-  available: boolean;
 };
 
 const tools: Tool[] = [
-  { id: "converter", key: "converter", icon: <RefreshCw className="w-5 h-5" />, href: "/tools/converter", available: true },
-  { id: "currency", key: "currency", icon: <Coins className="w-5 h-5" />, href: "/tools/currency", available: true },
-  { id: "calculator", key: "calculator", icon: <Calculator className="w-5 h-5" />, href: "/tools/calculator", available: true },
-  { id: "rule-of-three", key: "ruleOfThree", icon: <Divide className="w-5 h-5" />, href: "/tools/rule-of-three", available: true },
-  { id: "color-picker", key: "colorPicker", icon: <Palette className="w-5 h-5" />, href: "/tools/color-picker", available: false },
-  { id: "text-tools", key: "textTools", icon: <Type className="w-5 h-5" />, href: "/tools/text", available: false },
-  { id: "hash-generator", key: "hashGenerator", icon: <Hash className="w-5 h-5" />, href: "/tools/hash", available: false },
-  { id: "qr-generator", key: "qrGenerator", icon: <QrCode className="w-5 h-5" />, href: "/tools/qr-code", available: false },
-  { id: "timestamp", key: "timestamp", icon: <Clock className="w-5 h-5" />, href: "/tools/timestamp", available: false },
-  { id: "url-encoder", key: "urlEncoder", icon: <Link2 className="w-5 h-5" />, href: "/tools/url-encoder", available: false },
-  { id: "json-formatter", key: "jsonFormatter", icon: <FileJson className="w-5 h-5" />, href: "/tools/json", available: false },
+  { id: "converter", key: "converter", icon: <RefreshCw className="w-5 h-5" />, href: "/tools/converter" },
+  { id: "currency", key: "currency", icon: <Coins className="w-5 h-5" />, href: "/tools/currency" },
+  { id: "calculator", key: "calculator", icon: <Calculator className="w-5 h-5" />, href: "/tools/calculator" },
+  { id: "rule-of-three", key: "ruleOfThree", icon: <Divide className="w-5 h-5" />, href: "/tools/rule-of-three" },
+  { id: "color-picker", key: "colorPicker", icon: <Palette className="w-5 h-5" />, href: "/tools/color-picker" },
+  { id: "text-tools", key: "textTools", icon: <Type className="w-5 h-5" />, href: "/tools/text" },
+  { id: "hash-generator", key: "hashGenerator", icon: <Hash className="w-5 h-5" />, href: "/tools/hash" },
+  { id: "qr-generator", key: "qrGenerator", icon: <QrCode className="w-5 h-5" />, href: "/tools/qr-code" },
+  { id: "timestamp", key: "timestamp", icon: <Clock className="w-5 h-5" />, href: "/tools/timestamp" },
+  { id: "url-encoder", key: "urlEncoder", icon: <Link2 className="w-5 h-5" />, href: "/tools/url-encoder" },
+  { id: "json-formatter", key: "jsonFormatter", icon: <FileJson className="w-5 h-5" />, href: "/tools/json" },
 ];
 
 function AdBanner({ position }: { position: string }) {
@@ -61,10 +63,91 @@ function AdBanner({ position }: { position: string }) {
   );
 }
 
+function SuggestionModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const { t } = useLanguage();
+  const [suggestion, setSuggestion] = useState("");
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const suggestions = JSON.parse(localStorage.getItem("warp-suggestions") || "[]");
+    suggestions.push({
+      suggestion,
+      email: email || "Anonyme",
+      date: new Date().toISOString(),
+    });
+    localStorage.setItem("warp-suggestions", JSON.stringify(suggestions));
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setSuggestion("");
+      setEmail("");
+      onClose();
+    }, 2000);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-background border rounded-lg shadow-lg w-full max-w-md mx-4 p-6"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-medium">{t.home.suggestion}</h3>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        
+        {submitted ? (
+          <div className="text-center py-8">
+            <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+              <Send className="w-6 h-6 text-green-500" />
+            </div>
+            <p className="text-sm text-muted-foreground">Merci pour votre suggestion !</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Votre suggestion</label>
+                <textarea
+                  value={suggestion}
+                  onChange={(e) => setSuggestion(e.target.value)}
+                  placeholder="Décrivez l'outil que vous aimeriez voir..."
+                  className="w-full h-24 px-3 py-2 text-sm bg-secondary/50 border rounded resize-none focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Email (optionnel)</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="votre@email.com"
+                  className="w-full px-3 py-2 text-sm bg-secondary/50 border rounded focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                <Send className="w-4 h-4 mr-2" />
+                Envoyer
+              </Button>
+            </div>
+          </form>
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Home() {
   const { t, adsEnabled } = useLanguage();
-  const availableTools = tools.filter((tool) => tool.available);
-  const comingSoonTools = tools.filter((tool) => !tool.available);
+  const [showSuggestion, setShowSuggestion] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,9 +157,6 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-6">
             <a href="#tools" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
               {t.header.tools}
-            </a>
-            <a href="#coming-soon" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
-              {t.header.comingSoon}
             </a>
           </nav>
           <div className="flex items-center gap-2">
@@ -123,8 +203,8 @@ export default function Home() {
               <h2 className="text-lg font-medium mb-4">
                 {t.home.availableTools}
               </h2>
-              <div className="grid md:grid-cols-2 gap-3">
-                {availableTools.map((tool, index) => (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {tools.map((tool, index) => (
                   <motion.div
                     key={tool.id}
                     initial={{ opacity: 0, y: 10 }}
@@ -158,39 +238,6 @@ export default function Home() {
               <AdBanner position="Mid Content" />
             </div>
 
-            <section id="coming-soon" className="mb-12">
-              <h2 className="text-lg font-medium mb-4 flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                {t.home.comingSoonSection}
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {comingSoonTools.map((tool, index) => (
-                  <motion.div
-                    key={tool.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.03 }}
-                  >
-                    <Card className="p-4 h-full opacity-60">
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded bg-muted flex items-center justify-center text-muted-foreground shrink-0">
-                          {tool.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm mb-1">
-                            {t.tools[tool.key].name}
-                          </h3>
-                          <p className="text-xs text-muted-foreground">
-                            {t.tools[tool.key].description}
-                          </p>
-                        </div>
-                      </div>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </section>
-
             <section className="mb-8">
               <Card className="p-6 bg-secondary/30">
                 <h2 className="text-lg font-medium mb-2">
@@ -199,7 +246,7 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-4">
                   {t.home.suggestionDesc}
                 </p>
-                <Button size="sm">
+                <Button size="sm" onClick={() => setShowSuggestion(true)}>
                   {t.home.suggestTool}
                 </Button>
               </Card>
@@ -243,15 +290,14 @@ export default function Home() {
             <div>
               <h4 className="font-medium mb-2">{t.footer.resources}</h4>
               <ul className="space-y-1 text-xs text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground">{t.footer.api}</a></li>
-                <li><a href="#" className="hover:text-foreground">{t.footer.documentation}</a></li>
+                <li><Link href="/docs" className="hover:text-foreground">{t.footer.documentation}</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-medium mb-2">{t.footer.legal}</h4>
               <ul className="space-y-1 text-xs text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground">{t.footer.privacy}</a></li>
-                <li><a href="#" className="hover:text-foreground">{t.footer.terms}</a></li>
+                <li><Link href="/privacy" className="hover:text-foreground">{t.footer.privacy}</Link></li>
+                <li><Link href="/terms" className="hover:text-foreground">{t.footer.terms}</Link></li>
               </ul>
             </div>
           </div>
@@ -260,6 +306,8 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      <SuggestionModal isOpen={showSuggestion} onClose={() => setShowSuggestion(false)} />
     </div>
   );
 }

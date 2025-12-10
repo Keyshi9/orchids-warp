@@ -2,48 +2,35 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, Shield } from "lucide-react";
+import { ArrowLeft, Shield, RefreshCw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useLanguage } from "@/lib/language-context";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getAnalytics } from "@/lib/analytics";
 
-const mockUsers = [
-  { id: 1, country: "FR", city: "Paris", date: "2024-12-10 14:32" },
-  { id: 2, country: "US", city: "New York", date: "2024-12-10 14:28" },
-  { id: 3, country: "DE", city: "Berlin", date: "2024-12-10 14:15" },
-  { id: 4, country: "ES", city: "Madrid", date: "2024-12-10 13:58" },
-  { id: 5, country: "GB", city: "London", date: "2024-12-10 13:45" },
-  { id: 6, country: "CH", city: "Zürich", date: "2024-12-10 13:30" },
-  { id: 7, country: "FR", city: "Lyon", date: "2024-12-10 13:12" },
-  { id: 8, country: "BE", city: "Brussels", date: "2024-12-10 12:55" },
-];
-
-const mockStats = {
-  today: { visits: 1247, pageViews: 3892, uniqueVisitors: 834 },
-  week: { visits: 8453, pageViews: 24567, uniqueVisitors: 5621 },
-  month: { visits: 32156, pageViews: 98234, uniqueVisitors: 21543 },
-  topPages: [
-    { page: "/", views: 12453 },
-    { page: "/tools/converter", views: 8234 },
-    { page: "/tools/currency", views: 5678 },
-    { page: "/tools/calculator", views: 3421 },
-    { page: "/tools/rule-of-three", views: 2156 },
-  ],
-  topCountries: [
-    { country: "FR", visits: 12453, percent: 38.7 },
-    { country: "US", visits: 6234, percent: 19.4 },
-    { country: "DE", visits: 4567, percent: 14.2 },
-    { country: "GB", visits: 3421, percent: 10.6 },
-    { country: "ES", visits: 2156, percent: 6.7 },
-  ],
-};
+type Stats = ReturnType<typeof getAnalytics>;
 
 export default function AdminPage() {
   const { t, adsEnabled, setAdsEnabled } = useLanguage();
   const [activeTab, setActiveTab] = useState<"users" | "stats" | "settings">("users");
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const loadStats = () => {
+    setIsLoading(true);
+    const data = getAnalytics();
+    setStats(data);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    loadStats();
+    const interval = setInterval(loadStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -61,6 +48,9 @@ export default function AdminPage() {
             <span className="text-lg font-semibold">Warp</span>
           </div>
           <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={loadStats} disabled={isLoading}>
+              <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+            </Button>
             <ThemeToggle />
           </div>
         </div>
@@ -114,27 +104,33 @@ export default function AdminPage() {
           >
             <Card className="p-6">
               <h3 className="font-medium mb-4">{t.admin.users} - {t.admin.usersDesc}</h3>
-              <div className="space-y-2">
-                <div className="grid grid-cols-4 text-xs font-medium text-muted-foreground pb-2 border-b">
-                  <span>#</span>
-                  <span>Pays</span>
-                  <span>Ville</span>
-                  <span>Date</span>
-                </div>
-                {mockUsers.map((user) => (
-                  <div key={user.id} className="grid grid-cols-4 text-sm py-2 border-b border-border/50">
-                    <span className="text-muted-foreground">{user.id}</span>
-                    <span className="font-mono">{user.country}</span>
-                    <span>{user.city}</span>
-                    <span className="text-muted-foreground text-xs">{user.date}</span>
+              {stats && stats.recentUsers.length > 0 ? (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-5 text-xs font-medium text-muted-foreground pb-2 border-b">
+                    <span>#</span>
+                    <span>Pays</span>
+                    <span>Ville</span>
+                    <span>Page</span>
+                    <span>Date</span>
                   </div>
-                ))}
-              </div>
+                  {stats.recentUsers.map((user) => (
+                    <div key={`${user.id}-${user.date}`} className="grid grid-cols-5 text-sm py-2 border-b border-border/50">
+                      <span className="text-muted-foreground">{user.id}</span>
+                      <span className="font-mono">{user.country}</span>
+                      <span className="truncate">{user.city}</span>
+                      <span className="font-mono text-xs truncate">{user.page}</span>
+                      <span className="text-muted-foreground text-xs">{user.date}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm">Aucune visite enregistrée. Naviguez sur le site pour générer des données.</p>
+              )}
             </Card>
           </motion.div>
         )}
 
-        {activeTab === "stats" && (
+        {activeTab === "stats" && stats && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -143,25 +139,25 @@ export default function AdminPage() {
             <div className="grid md:grid-cols-3 gap-4">
               <Card className="p-4">
                 <p className="text-xs text-muted-foreground mb-1">Aujourd&apos;hui</p>
-                <p className="text-2xl font-semibold">{mockStats.today.visits.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">{mockStats.today.uniqueVisitors} uniques</p>
+                <p className="text-2xl font-semibold">{stats.today.visits.toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">{stats.today.uniqueVisitors} uniques</p>
               </Card>
               <Card className="p-4">
                 <p className="text-xs text-muted-foreground mb-1">Cette semaine</p>
-                <p className="text-2xl font-semibold">{mockStats.week.visits.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">{mockStats.week.uniqueVisitors} uniques</p>
+                <p className="text-2xl font-semibold">{stats.week.visits.toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">{stats.week.uniqueVisitors} uniques</p>
               </Card>
               <Card className="p-4">
                 <p className="text-xs text-muted-foreground mb-1">Ce mois</p>
-                <p className="text-2xl font-semibold">{mockStats.month.visits.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">{mockStats.month.uniqueVisitors} uniques</p>
+                <p className="text-2xl font-semibold">{stats.month.visits.toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">{stats.month.uniqueVisitors} uniques</p>
               </Card>
             </div>
 
             <Card className="p-6">
               <h3 className="font-medium mb-4">Pages les plus visitées</h3>
               <div className="space-y-3">
-                {mockStats.topPages.map((page, i) => (
+                {stats.topPages.map((page, i) => (
                   <div key={page.page} className="flex items-center gap-3">
                     <span className="text-xs text-muted-foreground w-4">{i + 1}</span>
                     <span className="flex-1 text-sm font-mono">{page.page}</span>
@@ -174,7 +170,7 @@ export default function AdminPage() {
             <Card className="p-6">
               <h3 className="font-medium mb-4">Trafic par pays</h3>
               <div className="space-y-3">
-                {mockStats.topCountries.map((country) => (
+                {stats.topCountries.map((country) => (
                   <div key={country.country} className="flex items-center gap-3">
                     <span className="font-mono text-sm w-8">{country.country}</span>
                     <div className="flex-1 bg-secondary rounded-full h-2">

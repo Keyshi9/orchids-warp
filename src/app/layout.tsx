@@ -4,6 +4,7 @@ import "./globals.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/lib/language-context";
+import { AnalyticsTracker } from "@/components/analytics-tracker";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -27,6 +28,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LanguageProvider>
+            <AnalyticsTracker />
             {children}
           </LanguageProvider>
         </ThemeProvider>

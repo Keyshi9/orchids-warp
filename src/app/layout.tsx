@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 import { ThemeProvider } from "next-themes";
+import { LanguageProvider } from "@/lib/language-context";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -10,7 +11,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ToolBox - Tous vos outils en un seul endroit",
+  title: "Warp - Tous vos outils en un seul endroit",
   description: "Convertisseur de fichiers, color picker, générateur QR code et plus. Une collection d'outils gratuits et puissants.",
 };
 
@@ -25,7 +26,9 @@ export default function RootLayout({
         className={`${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
         </ThemeProvider>
         <VisualEditsMessenger />
       </body>

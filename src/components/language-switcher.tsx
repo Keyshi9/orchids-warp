@@ -1,6 +1,5 @@
 "use client";
 
-import { Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,56 +7,37 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/language-context";
+import { Language } from "@/lib/translations";
 
-const languages = [
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "en", name: "English", flag: "🇬🇧" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
+const languages: { code: Language; name: string; abbr: string }[] = [
+  { code: "fr", name: "Français", abbr: "FR" },
+  { code: "en", name: "English", abbr: "EN" },
+  { code: "de", name: "Deutsch", abbr: "DE" },
+  { code: "es", name: "Español", abbr: "ES" },
 ];
 
 export function LanguageSwitcher() {
-  const [currentLang, setCurrentLang] = useState("fr");
-  const [mounted, setMounted] = useState(false);
+  const { lang, setLang } = useLanguage();
 
-  useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem("warp-lang");
-    if (saved) setCurrentLang(saved);
-  }, []);
-
-  const handleChange = (code: string) => {
-    setCurrentLang(code);
-    localStorage.setItem("warp-lang", code);
-  };
-
-  if (!mounted) {
-    return (
-      <Button variant="outline" size="icon" className="w-9 h-9">
-        <Globe className="w-4 h-4" />
-      </Button>
-    );
-  }
-
-  const current = languages.find((l) => l.code === currentLang);
+  const current = languages.find((l) => l.code === lang);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="w-9 h-9">
-          <span className="text-sm">{current?.flag}</span>
+        <Button variant="outline" size="sm" className="w-12 h-9 font-medium">
+          {current?.abbr}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {languages.map((lang) => (
+        {languages.map((language) => (
           <DropdownMenuItem
-            key={lang.code}
-            onClick={() => handleChange(lang.code)}
-            className={currentLang === lang.code ? "bg-secondary" : ""}
+            key={language.code}
+            onClick={() => setLang(language.code)}
+            className={lang === language.code ? "bg-secondary" : ""}
           >
-            <span className="mr-2">{lang.flag}</span>
-            {lang.name}
+            <span className="mr-2 font-mono text-xs">{language.abbr}</span>
+            {language.name}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

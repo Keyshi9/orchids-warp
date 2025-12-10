@@ -4,5 +4,7 @@
   "version": "1.0",
   "startupCommands": [
     "bun install; bun dev"
-  ]
+  ],
+  "deployedWithUserToken": true,
+  "vercelProjectId": "prj_9HZlb8FnzEAtL1oQ4AH0KcoGeoCE"
 }

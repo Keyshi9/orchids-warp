@@ -19,7 +19,7 @@ const defaultContext: LanguageContextType = {
   setAdsEnabled: () => {},
 };
 
-const LanguageContext = createContext<LanguageContextType>(defaultContext);
+const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Language>("fr");
@@ -56,5 +56,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 }
 
 export function useLanguage() {
-  return useContext(LanguageContext);
+  const context = useContext(LanguageContext);
+  if (!context) {
+    return defaultContext;
+  }
+  return context;
 }

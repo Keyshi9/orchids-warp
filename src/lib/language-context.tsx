@@ -24,10 +24,8 @@ const LanguageContext = createContext<LanguageContextType>(defaultContext);
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Language>("fr");
   const [adsEnabled, setAdsEnabledState] = useState(true);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const savedLang = localStorage.getItem("warp-lang") as Language;
     if (savedLang && translations[savedLang]) {
       setLangState(savedLang);
@@ -49,10 +47,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   const t = translations[lang];
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, t, adsEnabled, setAdsEnabled }}>

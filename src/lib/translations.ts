@@ -33,6 +33,14 @@ export const translations = {
         name: "Règle de Trois",
         description: "Calculs proportionnels rapides et simples",
       },
+      timezone: {
+        name: "Fuseaux Horaires",
+        description: "Comparez l'heure dans différentes villes",
+      },
+      bmi: {
+        name: "Calculateur IMC",
+        description: "Calculez votre indice de masse corporelle",
+      },
       colorPicker: {
         name: "Color Picker",
         description: "Sélectionnez et convertissez des couleurs HEX, RGB, HSL",
@@ -113,6 +121,25 @@ export const translations = {
       loading: "Chargement...",
       swap: "Inverser",
     },
+    timezone: {
+      title: "Fuseaux Horaires",
+      subtitle: "Comparez l'heure dans différentes villes",
+      addCity: "Ajouter une ville",
+    },
+    bmi: {
+      title: "Calculateur IMC",
+      subtitle: "Calculez votre indice de masse corporelle",
+      weight: "Poids",
+      height: "Taille",
+      calculate: "Calculer",
+      reset: "Reset",
+      result: "Votre IMC",
+      scale: "Échelle IMC",
+      underweight: "Insuffisance pondérale",
+      normal: "Poids normal",
+      overweight: "Surpoids",
+      obese: "Obésité",
+    },
   },
   en: {
     header: {
@@ -147,6 +174,14 @@ export const translations = {
       ruleOfThree: {
         name: "Rule of Three",
         description: "Quick and simple proportional calculations",
+      },
+      timezone: {
+        name: "Time Zones",
+        description: "Compare time across different cities",
+      },
+      bmi: {
+        name: "BMI Calculator",
+        description: "Calculate your body mass index",
       },
       colorPicker: {
         name: "Color Picker",
@@ -228,6 +263,25 @@ export const translations = {
       loading: "Loading...",
       swap: "Swap",
     },
+    timezone: {
+      title: "Time Zones",
+      subtitle: "Compare time across different cities",
+      addCity: "Add a city",
+    },
+    bmi: {
+      title: "BMI Calculator",
+      subtitle: "Calculate your body mass index",
+      weight: "Weight",
+      height: "Height",
+      calculate: "Calculate",
+      reset: "Reset",
+      result: "Your BMI",
+      scale: "BMI Scale",
+      underweight: "Underweight",
+      normal: "Normal weight",
+      overweight: "Overweight",
+      obese: "Obese",
+    },
   },
   de: {
     header: {
@@ -262,6 +316,14 @@ export const translations = {
       ruleOfThree: {
         name: "Dreisatz",
         description: "Schnelle und einfache proportionale Berechnungen",
+      },
+      timezone: {
+        name: "Zeitzonen",
+        description: "Vergleichen Sie die Zeit in verschiedenen Städten",
+      },
+      bmi: {
+        name: "BMI-Rechner",
+        description: "Berechnen Sie Ihren Body-Mass-Index",
       },
       colorPicker: {
         name: "Farbwähler",
@@ -343,6 +405,25 @@ export const translations = {
       loading: "Laden...",
       swap: "Tauschen",
     },
+    timezone: {
+      title: "Zeitzonen",
+      subtitle: "Vergleichen Sie die Zeit in verschiedenen Städten",
+      addCity: "Stadt hinzufügen",
+    },
+    bmi: {
+      title: "BMI-Rechner",
+      subtitle: "Berechnen Sie Ihren Body-Mass-Index",
+      weight: "Gewicht",
+      height: "Größe",
+      calculate: "Berechnen",
+      reset: "Zurücksetzen",
+      result: "Ihr BMI",
+      scale: "BMI-Skala",
+      underweight: "Untergewicht",
+      normal: "Normalgewicht",
+      overweight: "Übergewicht",
+      obese: "Fettleibigkeit",
+    },
   },
   es: {
     header: {
@@ -377,6 +458,14 @@ export const translations = {
       ruleOfThree: {
         name: "Regla de Tres",
         description: "Cálculos proporcionales rápidos y simples",
+      },
+      timezone: {
+        name: "Zonas Horarias",
+        description: "Compare la hora en diferentes ciudades",
+      },
+      bmi: {
+        name: "Calculadora IMC",
+        description: "Calcule su índice de masa corporal",
       },
       colorPicker: {
         name: "Selector de Color",
@@ -457,6 +546,25 @@ export const translations = {
       lastUpdate: "Última actualización",
       loading: "Cargando...",
       swap: "Invertir",
+    },
+    timezone: {
+      title: "Zonas Horarias",
+      subtitle: "Compare la hora en diferentes ciudades",
+      addCity: "Añadir una ciudad",
+    },
+    bmi: {
+      title: "Calculadora IMC",
+      subtitle: "Calcule su índice de masa corporal",
+      weight: "Peso",
+      height: "Altura",
+      calculate: "Calcular",
+      reset: "Reiniciar",
+      result: "Su IMC",
+      scale: "Escala IMC",
+      underweight: "Bajo peso",
+      normal: "Peso normal",
+      overweight: "Sobrepeso",
+      obese: "Obesidad",
     },
   },
 };

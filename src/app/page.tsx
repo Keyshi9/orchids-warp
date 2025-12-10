@@ -10,6 +10,8 @@ import {
   ArrowRight,
   Send,
   X,
+  Clock,
+  Scale,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 
-type ToolKey = "converter" | "currency" | "calculator" | "ruleOfThree";
+type ToolKey = "converter" | "currency" | "calculator" | "ruleOfThree" | "timezone" | "bmi";
 
 type Tool = {
   id: string;
@@ -32,6 +34,8 @@ const tools: Tool[] = [
   { id: "currency", key: "currency", icon: <Coins className="w-5 h-5" />, href: "/tools/currency" },
   { id: "calculator", key: "calculator", icon: <Calculator className="w-5 h-5" />, href: "/tools/calculator" },
   { id: "rule-of-three", key: "ruleOfThree", icon: <Divide className="w-5 h-5" />, href: "/tools/rule-of-three" },
+  { id: "timezone", key: "timezone", icon: <Clock className="w-5 h-5" />, href: "/tools/timezone" },
+  { id: "bmi", key: "bmi", icon: <Scale className="w-5 h-5" />, href: "/tools/bmi" },
 ];
 
 function SuggestionModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -219,6 +223,8 @@ export default function Home() {
                 <li><Link href="/tools/currency" className="hover:text-foreground">{t.tools.currency.name}</Link></li>
                 <li><Link href="/tools/calculator" className="hover:text-foreground">{t.tools.calculator.name}</Link></li>
                 <li><Link href="/tools/rule-of-three" className="hover:text-foreground">{t.tools.ruleOfThree.name}</Link></li>
+                <li><Link href="/tools/timezone" className="hover:text-foreground">{t.tools.timezone.name}</Link></li>
+                <li><Link href="/tools/bmi" className="hover:text-foreground">{t.tools.bmi.name}</Link></li>
               </ul>
             </div>
             <div>

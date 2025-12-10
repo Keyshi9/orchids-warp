@@ -22,7 +22,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { AdminButton } from "@/components/admin-button";
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 
@@ -162,7 +161,6 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <AdminButton />
           </div>
         </div>
       </header>

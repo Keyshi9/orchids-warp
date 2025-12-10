@@ -10,7 +10,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { AdminButton } from "@/components/admin-button";
 import { useLanguage } from "@/lib/language-context";
 
 async function hashText(text: string, algorithm: string): Promise<string> {
@@ -67,7 +66,6 @@ export default function HashGeneratorPage() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <AdminButton />
           </div>
         </div>
       </header>

@@ -8,7 +8,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { AdminButton } from "@/components/admin-button";
 
 export default function CalculatorPage() {
   const [display, setDisplay] = useState("0");
@@ -116,7 +115,6 @@ export default function CalculatorPage() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <AdminButton />
           </div>
         </div>
       </header>

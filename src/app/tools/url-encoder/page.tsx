@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { AdminButton } from "@/components/admin-button";
 import { useLanguage } from "@/lib/language-context";
 
 export default function UrlEncoderPage() {
@@ -58,7 +57,6 @@ export default function UrlEncoderPage() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <AdminButton />
           </div>
         </div>
       </header>

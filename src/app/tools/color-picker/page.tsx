@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { AdminButton } from "@/components/admin-button";
 import { useLanguage } from "@/lib/language-context";
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
@@ -106,7 +105,6 @@ export default function ColorPickerPage() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <AdminButton />
           </div>
         </div>
       </header>

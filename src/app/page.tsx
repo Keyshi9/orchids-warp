@@ -13,12 +13,14 @@ import {
   Link2,
   FileJson,
   ArrowRight,
-  Wrench,
   Coins,
+  Divide,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { AdminButton } from "@/components/admin-button";
 
 type Tool = {
   id: string;
@@ -44,6 +46,22 @@ const tools: Tool[] = [
     description: "Taux de change en temps réel USD, EUR, CHF, GBP",
     icon: <Coins className="w-5 h-5" />,
     href: "/tools/currency",
+    available: true,
+  },
+  {
+    id: "calculator",
+    name: "Calculatrice",
+    description: "Calculs avancés et conversions d'unités",
+    icon: <Calculator className="w-5 h-5" />,
+    href: "/tools/calculator",
+    available: true,
+  },
+  {
+    id: "rule-of-three",
+    name: "Règle de Trois",
+    description: "Calculs proportionnels rapides et simples",
+    icon: <Divide className="w-5 h-5" />,
+    href: "/tools/rule-of-three",
     available: true,
   },
   {
@@ -87,14 +105,6 @@ const tools: Tool[] = [
     available: false,
   },
   {
-    id: "calculator",
-    name: "Calculatrice",
-    description: "Calculs avancés et conversions d'unités",
-    icon: <Calculator className="w-5 h-5" />,
-    href: "/tools/calculator",
-    available: false,
-  },
-  {
     id: "url-encoder",
     name: "URL Encoder/Decoder",
     description: "Encodez et décodez des URLs",
@@ -130,12 +140,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <header className="border-b sticky top-0 z-50 bg-background">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded bg-foreground flex items-center justify-center">
-              <Wrench className="w-4 h-4 text-background" />
-            </div>
-            <span className="text-lg font-semibold">ToolBox</span>
-          </div>
+          <span className="text-lg font-semibold">Warp</span>
           <nav className="hidden md:flex items-center gap-6">
             <a href="#tools" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
               Outils
@@ -145,10 +150,9 @@ export default function Home() {
             </a>
           </nav>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
-            <Button variant="outline" size="sm">
-              Connexion
-            </Button>
+            <AdminButton />
           </div>
         </div>
       </header>
@@ -165,7 +169,7 @@ export default function Home() {
             transition={{ duration: 0.4 }}
           >
             <h1 className="text-3xl md:text-4xl font-semibold mb-3 tracking-tight">
-              ToolBox
+              Warp
             </h1>
             <p className="text-muted-foreground max-w-xl">
               Une collection d&apos;outils professionnels gratuits pour vos besoins quotidiens.
@@ -184,8 +188,7 @@ export default function Home() {
 
           <div className="flex-1 min-w-0">
             <section id="tools" className="mb-12">
-              <h2 className="text-lg font-medium mb-4 flex items-center gap-2">
-                <Wrench className="w-4 h-4" />
+              <h2 className="text-lg font-medium mb-4">
                 Outils disponibles
               </h2>
               <div className="grid md:grid-cols-2 gap-3">
@@ -289,13 +292,8 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="grid md:grid-cols-4 gap-6 text-sm">
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-6 h-6 rounded bg-foreground flex items-center justify-center">
-                  <Wrench className="w-3 h-3 text-background" />
-                </div>
-                <span className="font-medium">ToolBox</span>
-              </div>
-              <p className="text-muted-foreground text-xs">
+              <span className="font-medium">Warp</span>
+              <p className="text-muted-foreground text-xs mt-2">
                 Outils en ligne gratuits et professionnels.
               </p>
             </div>
@@ -304,6 +302,8 @@ export default function Home() {
               <ul className="space-y-1 text-xs text-muted-foreground">
                 <li><Link href="/tools/converter" className="hover:text-foreground">Convertisseur</Link></li>
                 <li><Link href="/tools/currency" className="hover:text-foreground">Devises</Link></li>
+                <li><Link href="/tools/calculator" className="hover:text-foreground">Calculatrice</Link></li>
+                <li><Link href="/tools/rule-of-three" className="hover:text-foreground">Règle de trois</Link></li>
               </ul>
             </div>
             <div>
@@ -322,7 +322,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t mt-6 pt-6 text-center text-xs text-muted-foreground">
-            <p>© 2024 ToolBox. Tous droits réservés.</p>
+            <p>© 2024 Warp. Tous droits réservés.</p>
           </div>
         </div>
       </footer>

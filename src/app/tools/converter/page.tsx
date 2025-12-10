@@ -12,7 +12,6 @@ import {
   X,
   RefreshCw,
   ArrowLeft,
-  Wrench,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -26,6 +25,8 @@ import {
 } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { AdminButton } from "@/components/admin-button";
 
 type ConversionFormat = {
   id: string;
@@ -233,18 +234,12 @@ export default function ConverterPage() {
               <span className="text-sm">Retour</span>
             </Link>
             <div className="h-4 w-px bg-border" />
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-foreground flex items-center justify-center">
-                <Wrench className="w-4 h-4 text-background" />
-              </div>
-              <span className="text-lg font-semibold">ToolBox</span>
-            </div>
+            <span className="text-lg font-semibold">Warp</span>
           </div>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
-            <Button variant="outline" size="sm">
-              Connexion
-            </Button>
+            <AdminButton />
           </div>
         </div>
       </header>

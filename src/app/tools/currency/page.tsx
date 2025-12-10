@@ -8,7 +8,6 @@ import {
   ArrowRightLeft,
   Coins,
   RefreshCw,
-  Wrench,
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
@@ -23,6 +22,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { AdminButton } from "@/components/admin-button";
 
 type Currency = {
   code: string;
@@ -136,18 +137,12 @@ export default function CurrencyConverter() {
               <span className="text-sm">Retour</span>
             </Link>
             <div className="h-4 w-px bg-border" />
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-foreground flex items-center justify-center">
-                <Wrench className="w-4 h-4 text-background" />
-              </div>
-              <span className="text-lg font-semibold">ToolBox</span>
-            </div>
+            <span className="text-lg font-semibold">Warp</span>
           </div>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
-            <Button variant="outline" size="sm">
-              Connexion
-            </Button>
+            <AdminButton />
           </div>
         </div>
       </header>
@@ -370,7 +365,7 @@ export default function CurrencyConverter() {
 
       <footer className="border-t mt-8">
         <div className="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
-          <p>© 2024 ToolBox. Données fournies par Frankfurter API (BCE).</p>
+          <p>© 2024 Warp. Données fournies par Frankfurter API (BCE).</p>
         </div>
       </footer>
     </div>

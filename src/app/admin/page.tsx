@@ -1,8 +1,10 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 
-const AdminContent = dynamic(() => import("./admin-content"), { ssr: false });
+export const dynamic = 'force-dynamic';
+
+const AdminContent = dynamicImport(() => import("./admin-content"), { ssr: false });
 
 export default function AdminPage() {
   return <AdminContent />;
